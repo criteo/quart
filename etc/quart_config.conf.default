@@ -1,0 +1,154 @@
+#Configuration file for Quart
+#
+#Requirements:
+#
+#This file should be named: quart_config.conf
+#
+#All sections must appear in the configuration file in the correct order.
+#All parameters that don't have a default value must be set.
+#Parameters with default value can be left out of the configuration (default value will be applied).
+#
+#Documentation and examples at the bottom of this configuration file.
+#
+#Begining of configuration file.
+
+
+filter {
+	min_severity = '4'
+	info_gathering = 'no'
+	min_info_severity = '3'
+}
+
+jira {
+	url = 'jira url'
+	user = 'user'
+	password = 'password'
+	key = 'PROJECT_KEY'
+	custom_field = 12345
+	critical_min_sev = '5'
+	major_min_sev = '3'
+	due_date = 'no'
+	critical_eta = 1
+	major_eta = 3
+	low_eta = 7
+}
+
+qualys {
+	url = 'https://qualysapi.qualys.eu'
+	user = 'user'
+	password = 'password'
+	scan_title_hook = ''
+}
+
+logging = 'normal'
+term_out = 'yes'
+monitoring_log = '/var/tmp/quart_status'
+syslog = 'yes'
+syslog_verbosity = 'normal'
+
+
+#End of configuration file. Help and examples below.
+#
+#
+#
+#'filter' section: values used by the vulnerability filter in quart.
+#	min_severity: Minimum severity required for potential/confirmed vulnerabilities
+#			to be passed on to Jira.
+# 			Allowed values: {'1', '2', '3', '4', '5'}
+#			Default: '3'
+#
+#	info_gathering: Whether to pass on information gathering vulnerabilties to Jira
+#			or to ignore them.
+#			Allowed values: {'yes', 'no'}
+#			Default: 'no'
+#
+#	min_info_severity: Minimum severity required for information gathering vulnerabilities
+#			to be passed jira (assuming info_gathering = 'yes').
+#			Allowed values: {'1', '2', '3'}
+#			Default: '3'
+#
+#
+#
+#'jira' section: Information regarding Jira.
+#	url: URL of Jira.
+#		Example: 'https://www.jira.example.com'
+#
+#	user: Username Quart will use to login into Jira.
+#		Example: 'j.smith'
+#
+#	password: Password associated to the jira user to login into Jira.
+#		Example: 'password1234'
+#
+#	key: Key of the Jira project where Quart will create Jira issues. Use all caps !
+#		Example: 'XXXX'
+#
+#	custom_field: ID of the QID custom field in Jira. The custom field must be configured to contain an integer. Do not include the parameter (ignore it) if no custom field is configured in Jira.
+#		Example:  '26354'
+#		Default = None
+#
+#	critical_min_sev: Minimum severity required for a vulnerability to create a critical priority issue in Jira.
+#		Allowed values: {'1', '2', '3', '4', '5', '6'}
+#		Default: '5'
+#		Note: Setting '6' means Quart will never create a critical priority issue since Qualys severities are from 1 to 5.
+#
+#	major_min_sev: Minimum severity required for a vulnerability to create a major priority issue in Jira.
+#		Allowed values: {'1', '2', '3', '4', '5', '6'}
+#		Default: '3'
+#		Note: Setting '6' means Quart will never create a major priority issue since Qualys severities are from 1 to 5.
+#
+#	due_date: Set automatic due date configuration for Quart created issues on/off
+#		Allowed values: {'yes', 'no'}
+#		Default: 'no'
+#
+#	critical_eta: Number of days for a critical priority issue to be solved. (Used to set issue due date)
+#		Allowed values: positive integer
+#		Default: 1
+#
+#	major_eta: Number of days for a major priority issue to be solved. (Used to set issue due date)
+#		Allowed values: positive integer
+#		Default: 3
+#
+#	low_eta: Number of days for a low priority issue to be solved. (Used to set issue due date)
+#		Allowed values: positive integer
+#		Default: 7
+#
+#  
+#
+#'qualys' section: Information regarding Qualys.
+#	url: URL of your Qualys platform where Quart will connect.
+#		Examples: 'https://qualysapi.qualys.eu'
+#
+#	user: Username to login into Qualys
+#		Example: 'Boogey Man'
+#
+#	password: Password associated to the username to login into Qualys.
+#		Example: 'password1234'
+#
+#	scan_title_hook: text required in the Qualys vulnerability scan title for its results to be downloaded and parsed by Quart. Be careful as this is case sensitive!
+#		Default: '' (empty string)
+#		Note: The default value (empty string) means there won't be any requirements in regards to the vulnerability scans title for their results to be downloaded.
+#
+#
+#
+#logging: Sets the logging level of Quart.
+#	Allowed values: {'silent', 'normal', 'verbose'}
+#	Default: 'normal'
+#
+#term_out: Set terminal log output on/off;
+#	Allowed values: {'yes', 'no'}
+#	Default: 'yes'
+#
+#monitoring_log: Set path and quart monitoring log.
+#	Example: '/home/victor/dev/quart/monitoring/quart_monitoring.log'
+#	Default: ''
+#	Note: The default value (no content) will disable the quart monitoring log.
+#
+#syslog: Set syslog messages on/off
+#	Allowed values: {'yes', 'no'}
+#	Default: 'yes'
+#
+#syslog_verbosity: Set syslog verbosity.
+#	Allowed values: {'normal', 'verbose'}
+#	Default: 'normal'
+#
+#

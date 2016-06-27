@@ -1,0 +1,53 @@
+#!/bin/sh
+
+## Parameters
+OK=0
+WARN=1
+CRIT=2
+UNKN=3
+TIME=36
+
+print_help() {
+  echo ""
+  echo "Checks quart_monitoring.log was changed in the X past hours."
+  echo "Default X value is 36 hours."
+  echo ""
+  echo "Usage: [-h] [-t]"
+  echo "-h : Display this help message"
+  echo "-t : Set number of hours"
+  echo ""
+  exit ${UNKN}
+}
+
+while getopts ":t:h" OPTION; do
+  case $OPTION in
+    h) # Print help message
+      print_help
+    ;;
+    t) # Set time value
+      TIME=$OPTARG
+    ;;
+  esac
+done
+
+LOGFILE="/var/tmp/quart_status"
+
+# Check the log file exists
+if [ ! -f ${LOGFILE} ]; then
+  echo "UNKNOWN: status file not found! (/var/tmp/quart_status)"
+  exit $UNKN
+fi
+
+FILETIME=$(stat -c "%Y" ${LOGFILE} )
+CURDATE=$(date "+%s")
+
+# Check if log file has been modified than 36 hours
+if [ ${FILETIME} -lt $(( $CURDATE - $TIME * 60 * 60 )) ]; then
+  # File was not modified in past 36 hours
+  echo File was not modified past $TIME hours
+  exit ${CRIT}
+else
+  # File was modified in past 36 hours
+  echo File was modified past $TIME hours
+  exit ${OK}
+fi
