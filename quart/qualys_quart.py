@@ -179,7 +179,7 @@ def download_reports(scan_references):
         payload = {'ref': reference}
         LOGGER.info('Downloading results for scan %s', reference)
         result.append(requests.post(
-            'https://qualysapi.qualys.eu/msp/scan_report.php?',
+            config.subsection('qualys').get('url'),
             auth=HTTPBasicAuth(config.subsection('qualys').get('user'), config.subsection('qualys').get('password')),
             params=payload
         ))
