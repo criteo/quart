@@ -180,7 +180,7 @@ def download_reports(scan_references):
         LOGGER.info('Downloading results for scan %s', reference)
         result.append(requests.post(
             'https://qualysapi.qualys.eu/msp/scan_report.php?',
-            auth=HTTPBasicAuth('crte-qa', 'sTip24HYbr'),
+            auth=HTTPBasicAuth(config.subsection('qualys').get('user'), config.subsection('qualys').get('password')),
             params=payload
         ))
 
